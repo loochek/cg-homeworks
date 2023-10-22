@@ -20,7 +20,23 @@ public:
   inline VkInstance   GetVkInstance() const override { return m_instance; }
   void InitVulkan(const char** a_instanceExtensions, uint32_t a_instanceExtensionsCount, uint32_t a_deviceId) override;
 
-  void Execute() override;
+  void Prepare(unsigned int workgroup_count) override;
+  void Run() override;
+
+  vk_utils::ICopyEngine* getBufferCopyHelper() const
+  {
+    return m_pCopyHelper.get();
+  }
+
+  VkBuffer getSourceBuffer() const
+  {
+    return m_source;
+  }
+
+  VkBuffer getResultBuffer() const
+  {
+    return m_sum;
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,18 +89,19 @@ private:
   std::vector<const char*> m_validationLayers;
   std::shared_ptr<vk_utils::ICopyEngine> m_pCopyHelper;
 
+private:
   VkDescriptorSet       m_sumDS; 
   VkDescriptorSetLayout m_sumDSLayout = nullptr;
   
   VkPipeline m_pipeline;
   VkPipelineLayout m_layout;
 
-  VkBuffer m_A, m_B, m_sum;
+  VkBuffer m_source, m_sum;
  
   void CreateInstance();
   void CreateDevice(uint32_t a_deviceId);
 
-  void BuildCommandBufferSimple(VkCommandBuffer a_cmdBuff, VkPipeline a_pipeline);
+  void BuildCommandBufferSimple(VkCommandBuffer a_cmdBuff, VkPipeline a_pipeline, unsigned int workgroup_count);
 
   void SetupSimplePipeline();
   void CreateComputePipeline();
