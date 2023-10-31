@@ -1,4 +1,9 @@
+#include <iostream>
+#include <vector>
 #include <random>
+#include <chrono>
+#include <memory>
+
 #include "simple_compute.h"
 
 constexpr int KERNEL_SIZE = 7;
