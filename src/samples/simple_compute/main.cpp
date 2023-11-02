@@ -15,8 +15,8 @@ void measureRunTime(Func func) {
   func();
   auto end = std::chrono::high_resolution_clock::now();
 
-  auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
-  std::cout << "Time: " << duration.count() << " seconds\n";
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  std::cout << "Time: " << static_cast<float>(duration.count()) / 1000 << " seconds\n";
 }
 
 float computeOnCpu(const std::vector<float> &source)
@@ -42,7 +42,7 @@ float computeOnCpu(const std::vector<float> &source)
 
 int main()
 {
-  constexpr int LENGTH = 1000000000;
+  constexpr int LENGTH = 100000000;
   constexpr int VULKAN_DEVICE_ID = 0;
 
   constexpr int WORKGROUP_COUNT = LENGTH % WORKGROUP_SIZE == 0 ?  LENGTH / WORKGROUP_SIZE : LENGTH / WORKGROUP_SIZE + 1;

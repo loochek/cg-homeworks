@@ -16,7 +16,7 @@ layout(std430, binding = 1) buffer Result
     float result[];
 };
 
-shared float part_sums[4096];
+shared float part_sums[1024];
 
 const int KERNEL_SIZE = 7;
 
@@ -25,9 +25,10 @@ void main()
     uint idx = gl_GlobalInvocationID.x;
     uint local_idx = gl_LocalInvocationID.x;
     uint group_size = gl_WorkGroupSize.x;
+
+    part_sums[local_idx] = 0.0f;
     if (idx < PushConstant.len) {
         // Convolution
-        part_sums[local_idx] = 0.0f;
         for (int offset = -KERNEL_SIZE / 2; offset <= KERNEL_SIZE / 2; offset++) {
             int i = int(idx) + offset;
             if (i < 0 || i >= PushConstant.len) {
