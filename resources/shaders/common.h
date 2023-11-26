@@ -49,6 +49,8 @@ struct UniformParams
   shader_float time;
   shader_vec3  baseColor;
   shader_bool  animateLightColor;
+  shader_uint  outputBufferWidth;
+  shader_uint  outputBufferHeight;
 };
 
 #endif // VK_GRAPHICS_BASIC_COMMON_H
